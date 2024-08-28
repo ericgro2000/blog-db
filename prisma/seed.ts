@@ -1,12 +1,12 @@
-import { PrismaClient } from "@prisma/client/extension"
-import seedData from "./seed.json"
+import { PrismaClient } from "@prisma/client";
+import seedData from "./seed.json";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function createUsers() {
-  await prisma.user.deleteMany()
+  await prisma.user.deleteMany();
   return Promise.all(
-    seedData.users.map(async user => {
+    seedData.users.map(async (user) => {
       return prisma.user.create({
         data: {
           id: user.id,
@@ -19,15 +19,15 @@ async function createUsers() {
           suite: user.address.suite,
           zipcode: user.address.zipcode,
         },
-      })
+      });
     })
-  )
+  );
 }
 
 async function createTodos() {
-  await prisma.todo.deleteMany()
+  await prisma.todo.deleteMany();
   return Promise.all(
-    seedData.todos.map(async todo => {
+    seedData.todos.map(async (todo) => {
       return prisma.todo.create({
         data: {
           id: todo.id,
@@ -35,15 +35,15 @@ async function createTodos() {
           completed: todo.completed,
           userId: todo.userId,
         },
-      })
+      });
     })
-  )
+  );
 }
 
 async function createPosts() {
-  await prisma.post.deleteMany()
+  await prisma.post.deleteMany();
   return Promise.all(
-    seedData.posts.map(async post => {
+    seedData.posts.map(async (post) => {
       return prisma.post.create({
         data: {
           id: post.id,
@@ -51,15 +51,15 @@ async function createPosts() {
           body: post.body,
           userId: post.userId,
         },
-      })
+      });
     })
-  )
+  );
 }
 
 async function createComments() {
-  await prisma.comment.deleteMany()
+  await prisma.comment.deleteMany();
   return Promise.all(
-    seedData.comments.map(async comment => {
+    seedData.comments.map(async (comment) => {
       return prisma.comment.create({
         data: {
           id: comment.id,
@@ -67,24 +67,24 @@ async function createComments() {
           body: comment.body,
           postId: comment.postId,
         },
-      })
+      });
     })
-  )
+  );
 }
 
 async function main() {
-  await createUsers()
-  await createTodos()
-  await createPosts()
-  await createComments()
+  await createUsers();
+  await createTodos();
+  await createPosts();
+  await createComments();
 }
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
-  .catch(async e => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
