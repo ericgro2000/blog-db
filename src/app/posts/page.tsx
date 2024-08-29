@@ -1,58 +1,43 @@
-import { FormGroup } from "@/components/FormGroup";
-import { PostCard, SkeletonPostCard } from "@/components/PostCard";
-import { SkeletonList } from "@/components/Skeleton";
 import { getPosts } from "@/db/posts";
 import { getUsers } from "@/db/users";
+import { PostCard, SkeletonPostCard } from "@/components/PostCard";
+import { SkeletonList } from "@/components/Skeleton";
 import { Suspense } from "react";
+import { SearchForm } from "@/shared/components/searchForm";
 
-export default function PostsPage() {
+interface PageProps {
+  searchParams: { query?: string; userId?: string };
+}
+
+export default function PostsPage({
+  searchParams: { userId = "", query = "" },
+}: PageProps) {
   return (
     <>
       <h1 className="page-title">Posts</h1>
 
-      <SearchForm />
+      <SearchForm userOptions={<UserSelect />} />
 
       <div className="card-grid">
         <Suspense
+          key={`${userId}-${query}`}
           fallback={
             <SkeletonList amount={6}>
               <SkeletonPostCard />
             </SkeletonList>
           }
         >
-          <PostGrid />
+          <PostGrid userId={userId} query={query} />
         </Suspense>
       </div>
     </>
   );
 }
 
-async function PostGrid() {
-  const posts = await getPosts();
+async function PostGrid({ userId, query }: { userId: string; query: string }) {
+  const posts = await getPosts({ query, userId });
 
   return posts.map((post) => <PostCard key={post.id} {...post} />);
-}
-
-function SearchForm() {
-  return (
-    <form className="form mb-4">
-      <div className="form-row">
-        <FormGroup>
-          <label htmlFor="query">Query</label>
-          <input type="search" name="query" id="query" />
-        </FormGroup>
-        <FormGroup>
-          <label htmlFor="userId">Author</label>
-          <select name="userId" id="userId">
-            <Suspense fallback={<option value="">Loading...</option>}>
-              <UserSelect />
-            </Suspense>
-          </select>
-        </FormGroup>
-        <button className="btn">Filter</button>
-      </div>
-    </form>
-  );
 }
 
 async function UserSelect() {

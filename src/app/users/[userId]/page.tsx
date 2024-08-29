@@ -69,7 +69,6 @@ export default function UserPage({
 
 async function UserDetails({ userId }: { userId: string }) {
   const user = await getUser(userId);
-  console.log(user);
 
   if (!user) {
     return <div>User not found</div>;
