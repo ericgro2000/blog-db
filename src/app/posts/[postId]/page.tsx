@@ -81,7 +81,7 @@ async function UserDetails({ userId }: { userId: number }) {
   const user = await getUser(userId);
 
   if (!user) {
-    return <span>User not found</span>;
+    return <div>User not found</div>;
   }
 
   return <Link href={`/users/${user.id}`}>{user.name}</Link>;

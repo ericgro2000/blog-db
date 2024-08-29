@@ -1,15 +1,23 @@
+import { unstable_cache } from "next/cache";
 import prisma from "./db";
+import { cache } from "react";
 
-export async function getUsers() {
-  await wait(2000);
+export const getUsers = unstable_cache(
+  cache(async () => {
+    await wait(2000);
 
-  return prisma.user.findMany();
-}
+    return prisma.user.findMany();
+  }),
+  ["users"]
+);
 
-export async function getUser(userId: string | number) {
-  await wait(2000);
-  return prisma.user.findUnique({ where: { id: Number(userId) } });
-}
+export const getUser = unstable_cache(
+  cache(async (userId: string | number) => {
+    await wait(2000);
+    return prisma.user.findUnique({ where: { id: Number(userId) } });
+  }),
+  ["user", "userId"]
+);
 
 function wait(duration: number) {
   return new Promise((resolve) => {
