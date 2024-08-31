@@ -1,22 +1,30 @@
 import { getPosts } from "@/db/posts";
-import { getUsers } from "@/db/users";
 import { PostCard, SkeletonPostCard } from "@/components/PostCard";
 import { SkeletonList } from "@/components/Skeleton";
 import { Suspense } from "react";
-import { SearchForm } from "@/shared/components/searchForm";
+import { SearchForm } from "./searchForm";
+import Link from "next/link";
+import { UserSelectOptions } from "./userSelectOptions";
 
-interface PageProps {
+type PageProps = {
   searchParams: { query?: string; userId?: string };
-}
+};
 
 export default function PostsPage({
   searchParams: { userId = "", query = "" },
 }: PageProps) {
   return (
     <>
-      <h1 className="page-title">Posts</h1>
+      <h1 className="page-title">
+        Posts
+        <div className="title-btns">
+          <Link className="btn btn-outline" href="posts/new">
+            New
+          </Link>
+        </div>
+      </h1>
 
-      <SearchForm userOptions={<UserSelect />} />
+      <SearchForm userOptions={<UserSelectOptions withAnyOption />} />
 
       <div className="card-grid">
         <Suspense
@@ -38,19 +46,4 @@ async function PostGrid({ userId, query }: { userId: string; query: string }) {
   const posts = await getPosts({ query, userId });
 
   return posts.map((post) => <PostCard key={post.id} {...post} />);
-}
-
-async function UserSelect() {
-  const users = await getUsers();
-
-  return (
-    <>
-      <option value="">Any</option>
-      {users.map((user) => (
-        <option key={user.id} value={user.id}>
-          {user.name}
-        </option>
-      ))}
-    </>
-  );
 }
