@@ -11,19 +11,20 @@ type Props = {
   createPost: (
     prevState: unknown,
     formData: FormData
-  ) => void | Record<string, string>;
+  ) => void | Promise<Record<string, string> | void>;
 };
 
 export function PostForm({ userSelectOptions, createPost }: Props) {
   const [errors, formAction] = useFormState(createPost, { error: "error" });
+  console.log(errors);
   return (
     <form className="form" action={formAction}>
       <div className="form-row">
-        <FormGroup errorMessage="Placeholder Error Message">
+        <FormGroup errorMessage={errors?.title}>
           <label htmlFor="title">Title</label>
           <input type="text" name="title" id="title" />
         </FormGroup>
-        <FormGroup>
+        <FormGroup errorMessage={errors?.userId}>
           <label htmlFor="userId">Author</label>
           <select name="userId" id="userId">
             <Suspense fallback={<option value="">Loading...</option>}>
@@ -33,7 +34,7 @@ export function PostForm({ userSelectOptions, createPost }: Props) {
         </FormGroup>
       </div>
       <div className="form-row">
-        <FormGroup>
+        <FormGroup errorMessage={errors?.body}>
           <label htmlFor="body">Body</label>
           <textarea name="body" id="body" />
         </FormGroup>
