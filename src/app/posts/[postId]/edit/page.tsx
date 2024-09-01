@@ -18,7 +18,7 @@ export default async function EditPostPage({
     <>
       <h1 className="page-title">Edit Post</h1>
       <PostForm
-        userSelectOptions={<UserSelectOptions withAnyOption={false} />}
+        userSelectOptions={<UserSelectOptions users={users} />}
         action={editPost}
         post={post}
       />

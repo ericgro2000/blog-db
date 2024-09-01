@@ -24,3 +24,5 @@ function wait(duration: number) {
     setTimeout(resolve, duration);
   });
 }
+
+export type getUsersReturnType = Awaited<ReturnType<typeof getUsers>>;

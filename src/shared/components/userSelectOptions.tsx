@@ -1,11 +1,13 @@
-import { getUsers } from "@/db/users";
+import { getUsers, getUsersReturnType } from "@/db/users";
 
 export async function UserSelectOptions({
   withAnyOption = false,
+  users,
 }: {
   withAnyOption?: boolean;
+  users?: getUsersReturnType;
 }) {
-  const users = await getUsers();
+  if (users == null) users = await getUsers();
 
   return (
     <>
