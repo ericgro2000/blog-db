@@ -4,13 +4,17 @@ import { ReactNode, Suspense } from "react";
 import Link from "next/link";
 import { SkeletonInput } from "./Skeleton";
 import { MyButton } from "@/shared/components/MyButton";
+import { useFormState } from "react-dom";
+
 type Props = {
   userSelectOptions: ReactNode;
+  createPost: (formData: FormData) => Promise<void>;
 };
 
-export function PostForm({ post, userSelectOptions }: Props) {
+export function PostForm({ userSelectOptions, createPost }: Props) {
+  //const [errors, formAction] = useFormState(action, {})
   return (
-    <form className="form" action={handleSubmit}>
+    <form className="form" action={createPost}>
       <div className="form-row">
         <FormGroup errorMessage="Placeholder Error Message">
           <label htmlFor="title">Title</label>
