@@ -1,9 +1,11 @@
-import { Skeleton, SkeletonList } from "@/components/Skeleton";
 import { getPostComments } from "@/db/comments";
 import { getPost } from "@/db/posts";
 import { getUser } from "@/db/users";
+import { Skeleton, SkeletonList } from "@/components/Skeleton";
 import Link from "next/link";
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
+import { DeleteButton } from "@/shared/components/DeleteButton";
 
 export default function PostPage({
   params: { postId },
@@ -17,6 +19,15 @@ export default function PostPage({
           <>
             <h1 className="page-title">
               <Skeleton inline short />
+              <div className="title-btns">
+                <Link
+                  className="btn btn-outline"
+                  href={`/posts/${postId}/edit`}
+                >
+                  Edit
+                </Link>
+                <DeleteButton postId={postId} />
+              </div>
             </h1>
             <span className="page-subtitle">
               By: <Skeleton short inline />
@@ -59,13 +70,19 @@ export default function PostPage({
 async function PostDetails({ postId }: { postId: string }) {
   const post = await getPost(postId);
 
-  if (!post) {
-    return <div>Post not found</div>;
-  }
+  if (post == null) return notFound();
 
   return (
     <>
-      <h1 className="page-title">{post.title}</h1>
+      <h1 className="page-title">
+        {post.title}
+        <div className="title-btns">
+          <Link className="btn btn-outline" href={`/posts/${postId}/edit`}>
+            Edit
+          </Link>
+          <DeleteButton postId={postId} />
+        </div>
+      </h1>
       <span className="page-subtitle">
         By:{" "}
         <Suspense fallback={<Skeleton short inline />}>
@@ -80,9 +97,7 @@ async function PostDetails({ postId }: { postId: string }) {
 async function UserDetails({ userId }: { userId: number }) {
   const user = await getUser(userId);
 
-  if (!user) {
-    return <div>User not found</div>;
-  }
+  if (user == null) return notFound();
 
   return <Link href={`/users/${user.id}`}>{user.name}</Link>;
 }
