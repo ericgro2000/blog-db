@@ -8,14 +8,14 @@ import { useFormState } from "react-dom";
 
 type Props = {
   userSelectOptions: ReactNode;
-  createPost: (
+  action: (
     prevState: unknown,
     formData: FormData
   ) => void | Promise<Record<string, string> | void>;
 };
 
-export function PostForm({ userSelectOptions, createPost }: Props) {
-  const [errors, formAction] = useFormState(createPost, { error: "error" });
+export function PostForm({ userSelectOptions, action }: Props) {
+  const [errors, formAction] = useFormState(action, { error: "error" });
 
   return (
     <form className="form" action={formAction}>

@@ -7,10 +7,7 @@ export default function NewPostPage() {
   return (
     <>
       <h1 className="page-title">New Post</h1>
-      <PostForm
-        createPost={createPost}
-        userSelectOptions={<UserSelectOptions />}
-      />
+      <PostForm action={createPost} userSelectOptions={<UserSelectOptions />} />
     </>
   );
 }
