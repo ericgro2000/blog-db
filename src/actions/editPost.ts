@@ -4,11 +4,11 @@ import { validatePost } from "./errorHandler";
 import { redirect } from "next/navigation";
 import { updatePost } from "@/db/posts";
 
-export async function editPostAction(
+export const editPostAction = async (
   postId: number,
   prevState: unknown,
   formData: FormData
-) {
+) => {
   const [data, errors] = validatePost(formData);
   if (data == null) return errors;
 
@@ -18,4 +18,4 @@ export async function editPostAction(
   revalidatePath(`/posts/${post.id}`);
   revalidatePath(`/users/${post.userId}`);
   redirect(`/posts/${post.id}`);
-}
+};
