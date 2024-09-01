@@ -27,14 +27,14 @@ export function PostForm({ userSelectOptions, action, post }: Props) {
             type="text"
             name="title"
             id="title"
-            required
+            // required
             defaultValue={post?.title}
           />
         </FormGroup>
         <FormGroup errorMessage={errors?.userId}>
           <label htmlFor="userId">Author</label>
           <select
-            required
+            // required
             name="userId"
             id="userId"
             defaultValue={post?.userId}
@@ -48,7 +48,12 @@ export function PostForm({ userSelectOptions, action, post }: Props) {
       <div className="form-row">
         <FormGroup errorMessage={errors?.body}>
           <label htmlFor="body">Body</label>
-          <textarea required name="body" id="body" defaultValue={post?.body} />
+          <textarea
+            //  required
+            name="body"
+            id="body"
+            defaultValue={post?.body}
+          />
         </FormGroup>
       </div>
       <div className="form-row form-btn-row">
