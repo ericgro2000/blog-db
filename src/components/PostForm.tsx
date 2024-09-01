@@ -8,13 +8,14 @@ import { useFormState } from "react-dom";
 
 type Props = {
   userSelectOptions: ReactNode;
+  post?: { id: number; title: string; body: string; userId: number };
   action: (
     prevState: unknown,
     formData: FormData
   ) => void | Promise<Record<string, string> | void>;
 };
 
-export function PostForm({ userSelectOptions, action }: Props) {
+export function PostForm({ userSelectOptions, action, post }: Props) {
   const [errors, formAction] = useFormState(action, { error: "error" });
 
   return (
@@ -22,11 +23,22 @@ export function PostForm({ userSelectOptions, action }: Props) {
       <div className="form-row">
         <FormGroup errorMessage={errors?.title}>
           <label htmlFor="title">Title</label>
-          <input type="text" name="title" id="title" />
+          <input
+            type="text"
+            name="title"
+            id="title"
+            required
+            defaultValue={post?.title}
+          />
         </FormGroup>
         <FormGroup errorMessage={errors?.userId}>
           <label htmlFor="userId">Author</label>
-          <select name="userId" id="userId">
+          <select
+            required
+            name="userId"
+            id="userId"
+            defaultValue={post?.userId}
+          >
             <Suspense fallback={<option value="">Loading...</option>}>
               {userSelectOptions}
             </Suspense>
@@ -36,7 +48,7 @@ export function PostForm({ userSelectOptions, action }: Props) {
       <div className="form-row">
         <FormGroup errorMessage={errors?.body}>
           <label htmlFor="body">Body</label>
-          <textarea name="body" id="body" />
+          <textarea required name="body" id="body" defaultValue={post?.body} />
         </FormGroup>
       </div>
       <div className="form-row form-btn-row">

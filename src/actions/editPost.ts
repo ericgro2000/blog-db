@@ -1,3 +1,4 @@
+"use server";
 import { revalidatePath } from "next/cache";
 import { validatePost } from "./errorHandler";
 import { redirect } from "next/navigation";
