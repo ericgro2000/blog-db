@@ -5,7 +5,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { validatePost } from "./errorHandler";
 
-export const createPostAction = async (formData: FormData) => {
+export const createPostAction = async (
+  prevState: unknown,
+  formData: FormData
+) => {
   const [data, errors] = validatePost(formData);
   console.log(formData);
   if (data == null) return errors;

@@ -8,7 +8,7 @@ import { useFormState } from "react-dom";
 
 type Props = {
   userSelectOptions: ReactNode;
-  createPost: (formData: FormData) => void;
+  createPost: (prevState: unknown, formData: FormData) => void;
 };
 
 export function PostForm({ userSelectOptions, createPost }: Props) {
