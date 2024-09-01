@@ -7,7 +7,7 @@ import { validatePost } from "./errorHandler";
 
 export const createPostAction = async (formData: FormData) => {
   const [data, errors] = validatePost(formData);
-
+  console.log(formData);
   if (data == null) return errors;
 
   const title = formData.get("title") as string;

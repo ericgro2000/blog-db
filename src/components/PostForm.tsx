@@ -8,13 +8,13 @@ import { useFormState } from "react-dom";
 
 type Props = {
   userSelectOptions: ReactNode;
-  createPost: (formData: FormData) => Promise<void>;
+  createPost: (formData: FormData) => void;
 };
 
 export function PostForm({ userSelectOptions, createPost }: Props) {
-  //const [errors, formAction] = useFormState(action, {})
+  const [errors, formAction] = useFormState(createPost, { error: "error" });
   return (
-    <form className="form" action={createPost}>
+    <form className="form" action={formAction}>
       <div className="form-row">
         <FormGroup errorMessage="Placeholder Error Message">
           <label htmlFor="title">Title</label>
